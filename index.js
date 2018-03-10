@@ -55,32 +55,6 @@ bot.hear(['ahoj', 'čau', 'čus'], (payload, chat)=>{
   })
 })
 
-bot.hear('vtip', (payload, chat) => {
-  const rekniPrvniVtip = (convo) => {
-    chat.say('Co řekne arabský včelař, když mu uletí včely? Ach med.')
-    convo.ask("Líbil se ti tento vtip?", (payload, convo) => {
-      var nazor = payload.message.text;
-      if (nazor == 'ano') {
-        convo.set('nazor', nazor)
-        convo.say("Tak si ho poslechni ještě jednou! ").then(() => rekniPrvniVtip(convo));
-      } else if (convo.get('nazor') != null && nazor != convo.get('nazor')) {
-        convo.say("Rozmyslel sis to, jo? Tak teda jinej! ").then(() => rekniDruhyVtip(convo));
-      } else {
-        convo.say("Tak zkusme jiný vtip! ").then(() => rekniDruhyVtip(convo));
-      }
-    })
-  }
-  
-  const rekniDruhyVtip = (convo) => {
-    chat.say('Toto je jiný vtip.')
-    convo.end()
-  }
-  
-  chat.conversation((convo) => {
-    rekniPrvniVtip(convo)
-  })
-})
-
 bot.hear('pomoc', (payload, chat) => {
   chat.say('Žádné starosti, tady je pár příkazů, které poslouchám:')
   chat.say("'vtip': řeknu ti vtip")
