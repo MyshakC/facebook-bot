@@ -55,23 +55,24 @@ bot.setGreetingText("Tento chatbot Vám řekne, jaké bude počasí")
 
 bot.setGetStartedButton((payload, chat) => {
   chat.say({text: 'Ahoj! Zeptej se mě, jaké bude počasí',
-            quickReplies: ['Počasí dnes', 'Počasí zítra']}, {typing: 2000});
+            quickReplies: ['Počasí dnes', 'Počasí zítra']}, {typing: 750});
 });
 
 const pocasiDnesKonverzace = (conversation) => {
   weather.find({search: 'Prague, Czech Republic', degreeType: 'C'}, function(err, result) {
     var currentTemperature = result[0].current.temperature
     conversation.ask({text: 'Dneska bude '+currentTemperature+'°C. Chceš vědět i jak bude zítra?',
-      quickReplies: ['Ano', 'Ne']}, (payload, chat) => {
-        var odpoved = payload.message.text;
-        if (odpoved == 'Ano' || odpoved == 'jo') {
+    quickReplies: ['Ano', 'Ne']}, (payload, chat) => {
+       var odpoved = payload.message.text;
+       if (odpoved == 'Ano' || odpoved == 'jo') {
           chat.conversation(pocasiZitraKonverzace)
           chat.end()
-        } else {
+       }
+       else {
           chat.say('Tak ahoj!')
           chat.end()
-        }
-    }, [], {typing: 2000});
+       }
+    }, [], {typing: 750});
   })
 }
 
@@ -79,16 +80,17 @@ const pocasiZitraKonverzace = (conversation) => {
   weather.find({search: 'Prague, Czech Republic', degreeType: 'C'}, function(err, result) {
     var tomorrow = result[0].forecast[2]
     conversation.ask({text: 'Zítra bude '+tomorrow.low+'-'+tomorrow.high+'°C. Chceš vědět i jak bude dnes?',
-      quickReplies: ['Ano', 'Ne']}, (payload, chat) => {
-        var odpoved = payload.message.text;
-        if (odpoved == 'Ano' || odpoved == 'jo') {
+    quickReplies: ['Ano', 'Ne']}, (payload, chat) => {
+      var odpoved = payload.message.text;
+      if (odpoved == 'Ano' || odpoved == 'jo') {
           chat.conversation(pocasiDnesKonverzace)
           chat.end()
-        } else {
+      }
+      else {
           chat.say('Tak ahoj!')
           chat.end()
-        }
-      }, [], {typing: 2000});
+      }
+    }, [], {typing: 750});
   })
 }
 
